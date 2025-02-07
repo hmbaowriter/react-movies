@@ -21,13 +21,16 @@ const App = () => {
   const [movieList, setMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchMovies = async () => {
+  const fetchMovies = async (query = '') => {
     setIsLoading(true);
     setErrorMsg('');
 
     try {
       // Call API to get movies
-      const endpoint = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+      const endpoint = query
+        ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
+        : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+
       const response = await fetch(endpoint, API_OPTIONS);
 
       if (!response.ok) {
@@ -42,7 +45,7 @@ const App = () => {
         return;
       }
 
-      console.log(data);
+      // console.log(data);
       setMovieList(data.results || []);
     } catch (error) {
       console.error(`Error fetching movies: ${error}`);
@@ -53,8 +56,8 @@ const App = () => {
   };
 
   useEffect(() => {
-    fetchMovies();
-  }, []);
+    fetchMovies(searchTerm);
+  }, [searchTerm]);
 
   return (
     <main>
