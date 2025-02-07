@@ -14,6 +14,9 @@ const database = new Databases(client);
 
 // * COMPLETED: Implement updateSearchCount function
 const updateSearchCount = async (searchTerm, movie) => {
+  console.log({
+    PROJECT_ID, DATABASE_ID, COLLECTION_ID
+  })
   // 1. Use Appwrite SDK to check if the search term exists in the database
   try {
     const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
