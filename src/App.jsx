@@ -5,6 +5,7 @@ import { useDebounce } from 'react-use';
 import Search from './components/Search';
 import Spinner from './components/Spinner';
 import MovieCard from './components/MovieCard';
+import { updateSearchCount } from './appwrite';
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -58,6 +59,11 @@ const App = () => {
 
       // console.log(data);
       setMovieList(data.results || []);
+
+      if (query && data.results.length > 0) {
+        // Update search count
+        await updateSearchCount(query, data.results[0]);
+      }
     } catch (error) {
       console.error(`Error fetching movies: ${error}`);
       setErrorMsg('Error fetching movies. Please try again later.');
